@@ -209,98 +209,98 @@ emptyContacts.textContent = "No contacts in the phone book";
 const ulContacts = document.createElement("ul")
 ulContacts.id = "contacts-list"
 ulContacts.classList.add("contacts-list")
-contacts.forEach((elem,index) => {
-    const liContact = document.createElement("li")
-    liContact.classList.add("contact-item")
-    liContact.setAttribute("data-index", index)
-    const divAvatar = document.createElement("div")
-    divAvatar.classList.add("contact-avatar")
-    const imgAvatar = document.createElement("img")
-    imgAvatar.src = elem.imgSrc
-    imgAvatar.alt = elem.name
-    imgAvatar.classList.add("avatar-img")
-    const divInfo = document.createElement("div")
-    divInfo.classList.add("contact-info")
-    const h3ContactName = document.createElement("h3")
-    h3ContactName.classList.add("contact-name")
-    h3ContactName.textContent = elem.name
-    const pContactPhone = document.createElement("p")
-    pContactPhone.classList.add("contact-phone")
-    pContactPhone.textContent = elem.phone
-    const divActions = document.createElement("div")
-    divActions.classList.add("contact-actions")
-    const btnEdit = document.createElement("button")
-    btnEdit.classList.add("btn-icon")
-    btnEdit.classList.add("btn-edit")
-    btnEdit.setAttribute("data-action", "edit")
-    const iEdit = document.createElement("i")
-    iEdit.classList.add("fas")
-    iEdit.classList.add("fa-edit")
-    const btnDelete = document.createElement("button")
-    btnDelete.classList.add("btn-icon")
-    btnDelete.classList.add("btn-delete")
-    btnDelete.setAttribute("data-action", "delete")
-    const iDelete = document.createElement("i")
-    iDelete.classList.add("fas")
-    iDelete.classList.add("fa-trash")
+function organizeContacts() {
+    ulContacts.innerHTML = "";
+    contacts.forEach((elem,index) => {
+        const liContact = document.createElement("li")
+        liContact.classList.add("contact-item")
+        liContact.setAttribute("data-index", index)
+        const divAvatar = document.createElement("div")
+        divAvatar.classList.add("contact-avatar")
+        const imgAvatar = document.createElement("img")
+        imgAvatar.src = elem.imgSrc
+        imgAvatar.alt = elem.name
+        imgAvatar.classList.add("avatar-img")
+        const divInfo = document.createElement("div")
+        divInfo.classList.add("contact-info")
+        const h3ContactName = document.createElement("h3")
+        h3ContactName.classList.add("contact-name")
+        h3ContactName.textContent = elem.name
+        const pContactPhone = document.createElement("p")
+        pContactPhone.classList.add("contact-phone")
+        pContactPhone.textContent = elem.phone
+        const divActions = document.createElement("div")
+        divActions.classList.add("contact-actions")
+        const btnEdit = document.createElement("button")
+        btnEdit.classList.add("btn-icon")
+        btnEdit.classList.add("btn-edit")
+        btnEdit.setAttribute("data-action", "edit")
+        const iEdit = document.createElement("i")
+        iEdit.classList.add("fas")
+        iEdit.classList.add("fa-edit")
+        const btnDelete = document.createElement("button")
+        btnDelete.classList.add("btn-icon")
+        btnDelete.classList.add("btn-delete")
+        btnDelete.setAttribute("data-action", "delete")
+        const iDelete = document.createElement("i")
+        iDelete.classList.add("fas")
+        iDelete.classList.add("fa-trash")
 
-    liContact.addEventListener ("mouseover",function contOver() {
+        liContact.addEventListener ("mouseover",function contOver() {
         liContact.style.transform = "translateY(-2px)";
         liContact.style.boxShadow = "0 8px 25px rgba(0, 0, 0, 0.15)";
         liContact.style.borderColor =" #667eea";
-    })
-    liContact.addEventListener ("mouseout",function contOut() {
+        })
+        liContact.addEventListener ("mouseout",function contOut() {
         liContact.style.transform = "";
         liContact.style.boxShadow = "";
         liContact.style.borderColor = "";
-    })
+        })
 
-    btnEdit.addEventListener ("mouseover",function btnEdiOver() {
+        btnEdit.addEventListener ("mouseover",function btnEdiOver() {
         btnEdit.style.transform = "scale(1.1)";
         btnEdit.style.boxShadow = "0 4px 15px rgba(72, 187, 120, 0.4)";
         btnEdit.title = `Edit ${elem.name}`;
-    })
-    btnEdit.addEventListener ("mouseout",function btnEdiOut() {
+        })
+        btnEdit.addEventListener ("mouseout",function btnEdiOut() {
         btnEdit.style.transform = "";
         btnEdit.style.boxShadow = "";
         btnEdit.title = "";
-    })
+        })
 
-    btnDelete.addEventListener ("mouseover",function btnDelOver() {
+        btnDelete.addEventListener ("mouseover",function btnDelOver() {
         btnDelete.style.transform = "scale(1.1)";
         btnDelete.style.boxShadow = "0 4px 15px rgba(245, 101, 101, 0.4)";
         btnDelete.title = `Delete ${elem.name}`;
-    })
-    btnDelete.addEventListener ("mouseout",function btnDelOut() {
+        })
+        btnDelete.addEventListener ("mouseout",function btnDelOut() {
         btnDelete.style.transform = "";
         btnDelete.style.boxShadow = "";
         btnDelete.title = "";
-    })
+        })
 
-    
 
-    ulContacts.appendChild(liContact)  // Add li to ul
-    liContact.appendChild(divAvatar)  // Add avatar div to li
-    divAvatar.appendChild(imgAvatar)  // Add img to avatar div
-    liContact.appendChild(divInfo)  // Add info div to li
-    divInfo.appendChild(h3ContactName)  // Add name h3 to info div
-    divInfo.appendChild(pContactPhone)  // Add phone p to info div
-    liContact.appendChild(divActions)  // Add actions div to li
-    divActions.appendChild(btnEdit)  // Add edit button to actions div
-    btnEdit.appendChild(iEdit)  // Add edit icon to edit button
-    divActions.appendChild(btnDelete)  // Add delete button to actions div
-    btnDelete.appendChild(iDelete)  // Add delete icon to delete button
 
-});
+        ulContacts.appendChild(liContact)  // Add li to ul
+        liContact.appendChild(divAvatar)  // Add avatar div to li
+        divAvatar.appendChild(imgAvatar)  // Add img to avatar div
+        liContact.appendChild(divInfo)  // Add info div to li
+        divInfo.appendChild(h3ContactName)  // Add name h3 to info div
+        divInfo.appendChild(pContactPhone)  // Add phone p to info div
+        liContact.appendChild(divActions)  // Add actions div to li
+        divActions.appendChild(btnEdit)  // Add edit button to actions div
+        btnEdit.appendChild(iEdit)  // Add edit icon to edit button
+        divActions.appendChild(btnDelete)  // Add delete button to actions div
+        btnDelete.appendChild(iDelete)  // Add delete icon to delete button
 
-// Append elements in the correct hierarchy
+    });
+}
+
 contactsSection.appendChild(hlContacts)  // Add contacts title to contacts section
 overalMainDiv.appendChild(contactsSection)  // Add contacts section to main content
-if (contacts.length === 0) {
-    contactsSection.appendChild(emptyContacts);  // Show empty message if no contacts
-}
 contactsSection.appendChild(ulContacts)  // Add contacts list to contacts section
 
+organizeContacts();
 
 // footer building
 const footer = document.querySelector(".main-footer")
@@ -381,6 +381,9 @@ const notesSpanDetails = document.createElement("span")
 notesSpanDetails.id = "detail-notes"
 
 ulContacts.addEventListener("click", function(e) {
+    if (e.target.closest('.btn-edit') || e.target.closest('.btn-delete')) {
+        return;
+    }
     popupDetails.style.display = 'flex';
     const contactItem = e.target.closest('li.contact-item');
     if (contactItem) {
@@ -423,3 +426,372 @@ notesDetails.appendChild(notesSpanDetails)  // Add span to notes div
 document.body.appendChild(popupDetails)  // Add popup to body
 
 // actions
+// delete all contacts
+deleteAllBtn.addEventListener("click", function() {
+    if (contacts.length > 0) {
+        if (confirm("Are you sure you want to delete all contacts?")) {
+            contacts.length = 0;
+            document.getElementById("contacts-list").remove();
+            contactsSection.appendChild(emptyContacts);
+        }
+    } else {
+        alert("No contacts to delete.");
+    }
+});
+
+// delete single contact button
+ulContacts.addEventListener("click", function(e) {
+    if (e.target.closest('.btn-delete')) {
+        const contactItem = e.target.closest('li.contact-item');
+        const index = contactItem.getAttribute('data-index');
+        if (confirm(`Are you sure you want to delete ${contacts[index].name}?`)) {
+            contacts.splice(index, 1);
+            contactItem.remove();
+            organizeContacts();
+            if (contacts.length === 0) {
+                contactsSection.appendChild(emptyContacts);
+            }
+        }
+    }
+});
+
+// new / edit contact button
+// form building
+
+const divForm = document.createElement("div")
+divForm.id = "contact-form-popup"
+divForm.classList.add("popup-overlay")
+const contentForm = document.createElement("div")
+contentForm.classList.add("popup-content")
+const headerForm = document.createElement("div")
+headerForm.classList.add("popup-header")
+const titleForm = document.createElement("h3")
+titleForm.classList.add("popup-title")
+titleForm.id = "form-popup-title"
+const closeFormBtn = document.createElement("button")
+closeFormBtn.classList.add("popup-close")
+closeFormBtn.id = "close-form-popup"
+closeFormBtn.addEventListener ("mouseover",function btnCloForOver() {
+    closeFormBtn.style.color = " #e53e3e";
+    closeFormBtn.style.background = " rgba(229, 62, 62, 0.1)";
+})
+closeFormBtn.addEventListener ("mouseout",function btnCloForOver() {
+    closeFormBtn.style.color = "";
+    closeFormBtn.style.background = "";
+})
+const iCloseForm = document.createElement("i")
+iCloseForm.classList.add("fas")
+iCloseForm.classList.add("fa-times")
+closeFormBtn.addEventListener("click", function() {
+    if (confirm("Are you sure you want to close the form? All unsaved changes will be lost.")) {
+        divForm.style.display = 'none';        
+        clearFormInputs();}
+});
+const bodyForm = document.createElement("div")
+bodyForm.classList.add("popup-body")
+const form = document.createElement("form")
+form.id = "contact-form"
+form.classList.add("contact-form")
+const formAvatar = document.createElement("div")
+formAvatar.classList.add("form-group")
+const labelAvatar = document.createElement("label")
+labelAvatar.setAttribute("for", "form-avatar")
+labelAvatar.classList.add("form-label")
+labelAvatar.textContent = "Profile Picture URL";
+const inputAvatar = document.createElement("input")
+inputAvatar.type = "url"
+inputAvatar.id = "form-avatar"
+inputAvatar.name = "avatar"
+inputAvatar.classList.add("form-input")
+const formName = document.createElement("div")
+formName.classList.add("form-group")
+const labelName = document.createElement("label")
+labelName.setAttribute("for", "form-name")
+labelName.classList.add("form-label")
+labelName.textContent = "Name *";
+const inputName = document.createElement("input")
+inputName.type = "text"
+inputName.id = "form-name"
+inputName.name = "name"
+inputName.classList.add("form-input")
+inputName.required = true;
+const formPhone = document.createElement("div")
+formPhone.classList.add("form-group")
+const labelPhone = document.createElement("label")
+labelPhone.setAttribute("for", "form-phone")
+labelPhone.classList.add("form-label")
+labelPhone.textContent = "Phone *";
+const inputPhone = document.createElement("input")
+inputPhone.type = "tel"
+inputPhone.id = "form-phone"
+inputPhone.name = "phone"
+inputPhone.classList.add("form-input")
+inputPhone.required = true;
+const formAddress = document.createElement("div")
+formAddress.classList.add("form-group")
+const labelAddress = document.createElement("label")
+labelAddress.setAttribute("for", "form-address")
+labelAddress.classList.add("form-label")
+labelAddress.textContent = "Address";
+const inputAddress = document.createElement("input")
+inputAddress.type = "text"
+inputAddress.id = "form-address"
+inputAddress.name = "address"
+inputAddress.classList.add("form-input")
+const formEmail = document.createElement("div")
+formEmail.classList.add("form-group")
+const labelEmail = document.createElement("label")
+labelEmail.setAttribute("for", "form-email")
+labelEmail.classList.add("form-label")
+labelEmail.textContent = "Email";
+const inputEmail = document.createElement("input")
+inputEmail.type = "email"
+inputEmail.id = "form-email"
+inputEmail.name = "email"
+inputEmail.classList.add("form-input")
+const formNotes = document.createElement("div")
+formNotes.classList.add("form-group")
+const labelNotes = document.createElement("label")
+labelNotes.setAttribute("for", "form-notes")
+labelNotes.classList.add("form-label")
+labelNotes.textContent = "Notes";
+const inputNotes = document.createElement("textarea")
+inputNotes.id = "form-notes"
+inputNotes.name = "notes"
+inputNotes.classList.add("form-textarea")
+inputNotes.rows = 3;
+const pForm = document.createElement("p")
+pForm.classList.add("form-info")
+pForm.textContent = "Fields marked with * are required.";
+const formActions = document.createElement("div")
+formActions.classList.add("form-actions")
+const saveFormBtn = document.createElement("button")
+saveFormBtn.type = "submit"
+saveFormBtn.classList.add("btn")
+saveFormBtn.classList.add("btn-primary")
+saveFormBtn.textContent = "Save contact";
+saveFormBtn.addEventListener ("mouseover",function btnSavForOver() {
+    saveFormBtn.style.transform = "translateY(-2px)";
+    saveFormBtn.style.background = " #5a6268";
+})
+saveFormBtn.addEventListener ("mouseout",function btnSavForOver() {
+    saveFormBtn.style.color = "";
+    saveFormBtn.style.background = "";
+})
+const cancelFormBtn = document.createElement("button")
+cancelFormBtn.type = "button"
+cancelFormBtn.classList.add("btn")
+cancelFormBtn.classList.add("btn-secondary")
+cancelFormBtn.id = "cancel-form"
+cancelFormBtn.textContent = "Cancel";
+cancelFormBtn.addEventListener ("mouseover",function btnCanForOver() {
+    cancelFormBtn.style.transform = "translateY(-2px)";
+    cancelFormBtn.style.background = " #5a6268";
+})
+cancelFormBtn.addEventListener ("mouseout",function btnCanForOver() {
+    cancelFormBtn.style.color = "";
+    cancelFormBtn.style.background = "";
+})
+cancelFormBtn.addEventListener("click", function() {
+    if (confirm("Are you sure you want to cancel? All unsaved changes will be lost.")) {
+    divForm.style.display = 'none';
+    clearFormInputs();}
+});
+
+// Append elements in the correct hierarchy
+document.body.appendChild(divForm)  // Add form popup to body
+divForm.appendChild(contentForm)  // Add popup content to form popup
+contentForm.appendChild(headerForm)  // Add header to popup content
+headerForm.appendChild(titleForm)  // Add title to header
+headerForm.appendChild(closeFormBtn)  // Add close button to header
+closeFormBtn.appendChild(iCloseForm)  // Add close icon to close button
+contentForm.appendChild(bodyForm)  // Add body to popup content
+bodyForm.appendChild(form)  // Add form to body
+form.appendChild(formAvatar)  // Add avatar group to form
+formAvatar.appendChild(labelAvatar)  // Add label to avatar group
+formAvatar.appendChild(inputAvatar)  // Add input to avatar group
+form.appendChild(formName)  // Add name group to form
+formName.appendChild(labelName)  // Add label to name group
+formName.appendChild(inputName)  // Add input to name group
+form.appendChild(formPhone)  // Add phone group to form
+formPhone.appendChild(labelPhone)  // Add label to phone group
+formPhone.appendChild(inputPhone)  // Add input to phone group
+form.appendChild(formAddress)  // Add address group to form
+formAddress.appendChild(labelAddress)  // Add label to address group
+formAddress.appendChild(inputAddress)  // Add input to address group
+form.appendChild(formEmail)  // Add email group to form
+formEmail.appendChild(labelEmail)  // Add label to email group
+formEmail.appendChild(inputEmail)  // Add input to email group
+form.appendChild(formNotes)  // Add notes group to form
+formNotes.appendChild(labelNotes)  // Add label to notes group
+formNotes.appendChild(inputNotes)  // Add input to notes group
+form.appendChild(pForm)  // Add paragraph to form
+form.appendChild(formActions)  // Add actions group to form
+formActions.appendChild(saveFormBtn)  // Add save button to actions group
+formActions.appendChild(cancelFormBtn)  // Add cancel button to actions group
+
+//Function to clear form inputs
+function clearFormInputs() {
+    console.log("sdfsd")
+    inputAvatar.value = "";
+    inputName.value = "";
+    inputPhone.value = "";
+    inputAddress.value = "";
+    inputEmail.value = "";
+    inputNotes.value = "";
+}
+
+// add contact button
+function isValidPhone(phone) {
+    console.log("isValidPhone called with:", phone);
+    return /^05\d(-?\d{7})$/.test(phone);
+}
+addContactBtn.addEventListener("click", function(e) {
+    e.preventDefault();
+    divForm.style.display = 'flex';
+    titleForm.textContent = "Add New Contact";
+    inputAvatar.placeholder = "";
+    inputName.placeholder = "Full Name";
+    inputPhone.placeholder = "050-1234567";
+    inputAddress.placeholder = "11 Name Street, City";
+    inputEmail.placeholder = "example@mail.com";
+    inputNotes.placeholder = "From where do I know this person?";
+    const newContact = function(e) {
+        e.preventDefault();
+        if (inputAvatar.value.trim() === "") {
+            inputAvatar.value = "images/faceless.jpg";
+        }
+        if (!isValidPhone(inputPhone.value.trim())) {
+            alert("Please enter a valid Israeli phone number (e.g., 050-1234567 or 0501234567).");
+            return;
+        }
+        if (inputName.value.trim() === "") {
+            alert("Name is required.");
+            return;
+        }
+        if (inputPhone.value.trim().length === 10) {
+            const formatPhone = inputPhone.value.trim().split("");
+            formatPhone.splice(3, 0, "-");
+            inputPhone.value = formatPhone.join("");
+        }
+        // const exists = contacts.some(contact =>
+        //     contact.name.toLowerCase() === inputName.value.trim().toLowerCase() &&
+        //     contact.phone === inputPhone.value.trim()
+        // );
+        // const phoneExists = contacts.some(contact =>
+        //     contact.name.toLowerCase() !== inputName.value.trim().toLowerCase() &&
+        //     contact.phone === inputPhone.value.trim()
+        // );
+        // const nameExists = contacts.some(contact =>
+        //     contact.name.toLowerCase() === inputName.value.trim().toLowerCase() &&
+        //     contact.phone !== inputPhone.value.trim()
+        // );
+        // if (exists) {
+        //     alert("This contact already exists.");
+        //     return;
+        // }
+        // else if (phoneExists) {
+        //     if(!confirm(`A contact with this phone number already exists. Do you want to add it anyway?`)) {
+        //         return;
+        // }}
+        // else if (nameExists) {
+        //     if(!confirm(`A contact with this name already exists. Do you want to add it anyway?`)) {
+        //         return;
+        // }}
+        const exists = contacts.some(contact =>
+    contact.name.toLowerCase() === inputName.value.trim().toLowerCase() &&
+    contact.phone === inputPhone.value.trim()
+    
+);
+const phoneExists = contacts.some(contact =>
+    contact.phone === inputPhone.value.trim() &&
+    contact.name.toLowerCase() !== inputName.value.trim().toLowerCase()
+);
+const nameExists = contacts.some(contact =>
+    contact.name.toLowerCase() === inputName.value.trim().toLowerCase() &&
+    contact.phone !== inputPhone.value.trim()
+);
+
+if (exists) {
+    alert("This contact already exists.");
+    return;
+} else if (phoneExists) {
+    if (!confirm(`A contact with this phone number already exists. Do you want to add it anyway?`)) {
+        return;
+    }
+} else if (nameExists) {
+    if (!confirm(`A contact with this name already exists. Do you want to add it anyway?`)) {
+        return;
+    }
+}
+        const newObj = {
+            name: inputName.value.trim(),
+            phone: inputPhone.value.trim(),
+            address: inputAddress.value.trim(),
+            email: inputEmail.value.trim(),
+            notes: inputNotes.value.trim(),
+            imgSrc: inputAvatar.value.trim()
+        };
+        contacts.push(newObj);
+        contacts.sort((a, b) => a.name.localeCompare(b.name));
+        organizeContacts();
+        divForm.style.display = 'none';
+        clearFormInputs();
+        console.log("New contact added:", newObj);
+        console.log("Current contacts:", contacts);
+        console.log(confirm("New contact added successfully!"));
+    }
+    saveFormBtn.addEventListener('click', newContact)
+    saveFormBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+    })
+});
+
+// edit contact button
+ulContacts.addEventListener("click", function(e) {
+    if (e.target.closest('.btn-edit')) {
+        const contactItem = e.target.closest('li.contact-item');
+        const index = contactItem.getAttribute('data-index');
+        const contact = contacts[index];
+        divForm.style.display = 'flex';
+        titleForm.textContent = "Edit Contact";
+        inputAvatar.value = contact.imgSrc;
+        inputName.value = contact.name;
+        inputPhone.value = contact.phone;
+        inputAddress.value = contact.address;
+        inputEmail.value = contact.email;
+        inputNotes.value = contact.notes;
+
+        const editContact = function(e) {
+            e.preventDefault();
+            if (inputAvatar.value.trim() === "") {
+                inputAvatar.value = "images/faceless.jpg";
+            }
+            if (!isValidPhone(inputPhone.value.trim())) {
+                alert("Please enter a valid Israeli phone number (e.g., 050-1234567 or 0501234567).");
+                return;
+            }
+            if (inputName.value.trim() === "") {
+                alert("Name is required.");
+                return;
+            }
+            // if (inputName.value.trim() === contact.name && inputPhone.value.trim() === contact.phone) {
+            contacts[index] = {
+                name: inputName.value.trim(),
+                phone: inputPhone.value.trim(),
+                address: inputAddress.value.trim(),
+                email: inputEmail.value.trim(),
+                notes: inputNotes.value.trim(),
+                imgSrc: inputAvatar.value.trim()
+            };
+            contacts.sort((a, b) => a.name.localeCompare(b.name));
+            organizeContacts();
+            divForm.style.display = 'none';
+            clearFormInputs();
+            console.log("Contact edited:", contacts[index]);
+            console.log("Current contacts:", contacts);
+            console.log(confirm("Contact edited successfully!"));
+        }
+        saveFormBtn.addEventListener('click', editContact)
+    }
+});
