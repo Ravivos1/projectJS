@@ -575,7 +575,7 @@ saveFormBtn.addEventListener ("mouseover",function btnSavForOver() {
     saveFormBtn.style.background = " #5a6268";
 })
 saveFormBtn.addEventListener ("mouseout",function btnSavForOver() {
-    saveFormBtn.style.color = "";
+    saveFormBtn.style.transform = "";
     saveFormBtn.style.background = "";
 })
 const cancelFormBtn = document.createElement("button")
@@ -589,7 +589,7 @@ cancelFormBtn.addEventListener ("mouseover",function btnCanForOver() {
     cancelFormBtn.style.background = " #5a6268";
 })
 cancelFormBtn.addEventListener ("mouseout",function btnCanForOver() {
-    cancelFormBtn.style.color = "";
+    cancelFormBtn.style.transform = "";
     cancelFormBtn.style.background = "";
 })
 cancelFormBtn.addEventListener("click", function() {
@@ -632,22 +632,167 @@ formActions.appendChild(cancelFormBtn)  // Add cancel button to actions group
 
 //Function to clear form inputs
 function clearFormInputs() {
-    console.log("sdfsd")
     inputAvatar.value = "";
     inputName.value = "";
     inputPhone.value = "";
     inputAddress.value = "";
     inputEmail.value = "";
     inputNotes.value = "";
+    nameValid.style.display = "none";
+    phoneValid.style.display = "none";
+    emailValid.style.display = "none";
 }
 
-// add contact button
+// validations functions
 function isValidPhone(phone) {
     console.log("isValidPhone called with:", phone);
     return /^05\d(-?\d{7})$/.test(phone);
 }
+function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+}
+
+const nameValid = document.createElement("p");
+nameValid.textContent = "Name is required.";
+nameValid.style.color = "red";
+nameValid.style.display = "none";
+formName.appendChild(nameValid);
+const phoneValid = document.createElement("p");
+phoneValid.textContent = "Please enter a valid Israeli phone number.";
+phoneValid.style.color = "red";
+phoneValid.style.display = "none";
+formPhone.appendChild(phoneValid);
+const emailValid = document.createElement("p");
+emailValid.textContent = "Please enter a valid email address.";
+emailValid.style.color = "red";
+emailValid.style.display = "none";
+formEmail.appendChild(emailValid);
+function validationsCheck() {
+    nameValid.style.display = "none";
+    phoneValid.style.display = "none";
+    emailValid.style.display = "none";
+    if (inputAvatar.value.trim() === "") {
+        inputAvatar.value = "images/faceless.jpg";
+        console.log("Default avatar set.");
+    }
+    let flag = true;
+    if (inputName.value.trim() === "") {
+        nameValid.style.display = "block";
+        flag = false;
+        console.log("Name validation failed.");
+    }
+    if (!isValidPhone(inputPhone.value.trim())) {
+        phoneValid.style.display = "block";
+        flag = false;
+        console.log("Phone validation failed.");
+    }
+    if (inputEmail.value.trim() !== "" && !isValidEmail(inputEmail.value.trim())) {
+        emailValid.style.display = "block";
+        flag = false;
+        console.log("Email validation failed.");
+    }
+    if (inputPhone.value.trim().length === 10) {
+        const formatPhone = inputPhone.value.trim().split("");
+        formatPhone.splice(3, 0, "-");
+        inputPhone.value = formatPhone.join("");
+        console.log("Phone number formatted to:", inputPhone.value);
+    }
+    console.log("Validations check result:", flag);
+    if (!flag) {
+        return false;
+    }
+    return true;
+}
+
+// add contact button
+function newContact(e) {
+    e.preventDefault();
+    if (!validationsCheck()) {
+        console.log("Validation failed.");
+        return;
+    }
+    const exists = contacts.some(contact =>
+        contact.name.toLowerCase() === inputName.value.trim().toLowerCase() &&
+        contact.phone === inputPhone.value.trim()
+    );
+    const phoneExists = contacts.some(contact =>
+        contact.phone === inputPhone.value.trim() &&
+        contact.name.toLowerCase() !== inputName.value.trim().toLowerCase()
+    );
+    const nameExists = contacts.some(contact =>
+        contact.name.toLowerCase() === inputName.value.trim().toLowerCase() &&
+        contact.phone !== inputPhone.value.trim()
+    );
+
+    if (exists) {
+        alert("This contact already exists.");
+        return;
+    } else if (phoneExists) {
+        if (!confirm(`A contact with this phone number already exists. Do you want to add it anyway?`)) {
+        return;
+    }
+    } else if (nameExists) {
+        if (!confirm(`A contact with this name already exists. Do you want to add it anyway?`)) {
+            return;
+        }
+    }
+    const newObj = {
+        name: inputName.value.trim(),
+        phone: inputPhone.value.trim(),
+        address: inputAddress.value.trim(),
+        email: inputEmail.value.trim(),
+        notes: inputNotes.value.trim(),
+        imgSrc: inputAvatar.value.trim()
+    };
+    contacts.push(newObj);
+    contacts.sort((a, b) => a.name.localeCompare(b.name));
+    organizeContacts();
+    divForm.style.display = 'none';
+    clearFormInputs();
+    console.log("New contact added:", newObj);
+    console.log("Current contacts:", contacts);
+    console.log(confirm("New contact added successfully!"));
+}
+
+function editContact(e) {
+    e.preventDefault();
+    const contact = contacts[index];
+    if (!validationsCheck()) {
+        return;
+    }
+    if (inputName.value.trim() === contact.name &&
+        inputPhone.value.trim() === contact.phone &&
+        inputAddress.value.trim() === contact.address &&
+        inputEmail.value.trim() === contact.email &&
+        inputNotes.value.trim() === contact.notes &&
+        inputAvatar.value.trim() === contact.imgSrc) {
+        alert("No changes made to the contact.");
+        divForm.style.display = 'none';
+        clearFormInputs();
+    }
+    else {
+        contacts[index] = {
+            name: inputName.value.trim(),
+            phone: inputPhone.value.trim(),
+            address: inputAddress.value.trim(),
+            email: inputEmail.value.trim(),
+            notes: inputNotes.value.trim(),
+            imgSrc: inputAvatar.value.trim()
+        };
+        contacts.sort((a, b) => a.name.localeCompare(b.name));
+        organizeContacts();
+        divForm.style.display = 'none';
+        clearFormInputs();
+        console.log("Contact edited:", contacts[index]);
+        console.log("Current contacts:", contacts);
+        console.log(confirm("Contact edited successfully!"));
+    }
+};
+
+let index = null;
 addContactBtn.addEventListener("click", function(e) {
     e.preventDefault();
+    index = null;
     divForm.style.display = 'flex';
     titleForm.textContent = "Add New Contact";
     inputAvatar.placeholder = "";
@@ -656,102 +801,16 @@ addContactBtn.addEventListener("click", function(e) {
     inputAddress.placeholder = "11 Name Street, City";
     inputEmail.placeholder = "example@mail.com";
     inputNotes.placeholder = "From where do I know this person?";
-    const newContact = function(e) {
-        e.preventDefault();
-        if (inputAvatar.value.trim() === "") {
-            inputAvatar.value = "images/faceless.jpg";
-        }
-        if (!isValidPhone(inputPhone.value.trim())) {
-            alert("Please enter a valid Israeli phone number (e.g., 050-1234567 or 0501234567).");
-            return;
-        }
-        if (inputName.value.trim() === "") {
-            alert("Name is required.");
-            return;
-        }
-        if (inputPhone.value.trim().length === 10) {
-            const formatPhone = inputPhone.value.trim().split("");
-            formatPhone.splice(3, 0, "-");
-            inputPhone.value = formatPhone.join("");
-        }
-        // const exists = contacts.some(contact =>
-        //     contact.name.toLowerCase() === inputName.value.trim().toLowerCase() &&
-        //     contact.phone === inputPhone.value.trim()
-        // );
-        // const phoneExists = contacts.some(contact =>
-        //     contact.name.toLowerCase() !== inputName.value.trim().toLowerCase() &&
-        //     contact.phone === inputPhone.value.trim()
-        // );
-        // const nameExists = contacts.some(contact =>
-        //     contact.name.toLowerCase() === inputName.value.trim().toLowerCase() &&
-        //     contact.phone !== inputPhone.value.trim()
-        // );
-        // if (exists) {
-        //     alert("This contact already exists.");
-        //     return;
-        // }
-        // else if (phoneExists) {
-        //     if(!confirm(`A contact with this phone number already exists. Do you want to add it anyway?`)) {
-        //         return;
-        // }}
-        // else if (nameExists) {
-        //     if(!confirm(`A contact with this name already exists. Do you want to add it anyway?`)) {
-        //         return;
-        // }}
-        const exists = contacts.some(contact =>
-    contact.name.toLowerCase() === inputName.value.trim().toLowerCase() &&
-    contact.phone === inputPhone.value.trim()
-    
-);
-const phoneExists = contacts.some(contact =>
-    contact.phone === inputPhone.value.trim() &&
-    contact.name.toLowerCase() !== inputName.value.trim().toLowerCase()
-);
-const nameExists = contacts.some(contact =>
-    contact.name.toLowerCase() === inputName.value.trim().toLowerCase() &&
-    contact.phone !== inputPhone.value.trim()
-);
-
-if (exists) {
-    alert("This contact already exists.");
-    return;
-} else if (phoneExists) {
-    if (!confirm(`A contact with this phone number already exists. Do you want to add it anyway?`)) {
-        return;
-    }
-} else if (nameExists) {
-    if (!confirm(`A contact with this name already exists. Do you want to add it anyway?`)) {
-        return;
-    }
-}
-        const newObj = {
-            name: inputName.value.trim(),
-            phone: inputPhone.value.trim(),
-            address: inputAddress.value.trim(),
-            email: inputEmail.value.trim(),
-            notes: inputNotes.value.trim(),
-            imgSrc: inputAvatar.value.trim()
-        };
-        contacts.push(newObj);
-        contacts.sort((a, b) => a.name.localeCompare(b.name));
-        organizeContacts();
-        divForm.style.display = 'none';
-        clearFormInputs();
-        console.log("New contact added:", newObj);
-        console.log("Current contacts:", contacts);
-        console.log(confirm("New contact added successfully!"));
-    }
-    saveFormBtn.addEventListener('click', newContact)
-    saveFormBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-    })
+    saveFormBtn.removeEventListener('click', editContact);
+    saveFormBtn.removeEventListener('click', newContact);
+    saveFormBtn.addEventListener('click', newContact);
 });
 
 // edit contact button
 ulContacts.addEventListener("click", function(e) {
     if (e.target.closest('.btn-edit')) {
         const contactItem = e.target.closest('li.contact-item');
-        const index = contactItem.getAttribute('data-index');
+        index = contactItem.getAttribute('data-index');
         const contact = contacts[index];
         divForm.style.display = 'flex';
         titleForm.textContent = "Edit Contact";
@@ -761,37 +820,8 @@ ulContacts.addEventListener("click", function(e) {
         inputAddress.value = contact.address;
         inputEmail.value = contact.email;
         inputNotes.value = contact.notes;
-
-        const editContact = function(e) {
-            e.preventDefault();
-            if (inputAvatar.value.trim() === "") {
-                inputAvatar.value = "images/faceless.jpg";
-            }
-            if (!isValidPhone(inputPhone.value.trim())) {
-                alert("Please enter a valid Israeli phone number (e.g., 050-1234567 or 0501234567).");
-                return;
-            }
-            if (inputName.value.trim() === "") {
-                alert("Name is required.");
-                return;
-            }
-            // if (inputName.value.trim() === contact.name && inputPhone.value.trim() === contact.phone) {
-            contacts[index] = {
-                name: inputName.value.trim(),
-                phone: inputPhone.value.trim(),
-                address: inputAddress.value.trim(),
-                email: inputEmail.value.trim(),
-                notes: inputNotes.value.trim(),
-                imgSrc: inputAvatar.value.trim()
-            };
-            contacts.sort((a, b) => a.name.localeCompare(b.name));
-            organizeContacts();
-            divForm.style.display = 'none';
-            clearFormInputs();
-            console.log("Contact edited:", contacts[index]);
-            console.log("Current contacts:", contacts);
-            console.log(confirm("Contact edited successfully!"));
-        }
-        saveFormBtn.addEventListener('click', editContact)
+        saveFormBtn.removeEventListener('click', newContact); 
+        saveFormBtn.removeEventListener('click', editContact);
+        saveFormBtn.addEventListener('click', editContact);
     }
 });
