@@ -60,20 +60,6 @@ const iNavHeader = document.createElement("i")
 iNavHeader.classList.add("fas")
 iNavHeader.classList.add("fa-magic")
 
-
-        // <!-- <div class="header-container">
-        //     <h1 class="main-title">
-        //         <i class="fas fa-address-book"></i>
-        //         Phone Book
-        //     </h1>
-        //     <nav class="header-nav">
-        //         <button id="special-effect-btn" class="special-btn">
-        //             <i class="fas fa-magic"></i>
-        //             Click me to see a magic!
-        //         </button>
-        //     </nav>
-        // </div> -->
-
 // Append elements in the correct hierarchy
 hlHeader.prepend(iHlHeader)          // Add icon inside h1 BEFORE text
 btnHeader.prepend(iNavHeader)        // Add magic icon to button BEFORE text
@@ -247,14 +233,11 @@ function organizeContacts() {
         iDelete.classList.add("fa-trash")
 
         liContact.addEventListener ("mouseover",function contOver() {
-        liContact.style.transform = "translateY(-2px)";
-        liContact.style.boxShadow = "0 8px 25px rgba(0, 0, 0, 0.15)";
-        liContact.style.borderColor =" #667eea";
+            liContact.classList.add("contact-item-hover");
         })
         liContact.addEventListener ("mouseout",function contOut() {
-        liContact.style.transform = "";
-        liContact.style.boxShadow = "";
-        liContact.style.borderColor = "";
+        liContact.classList.remove("contact-item-hover");
+        liContact.style.background = "";
         })
 
         btnEdit.addEventListener ("mouseover",function btnEdiOver() {
@@ -329,19 +312,14 @@ const closeDetailsBtn = document.createElement("button")
 closeDetailsBtn.classList.add("popup-close")
 closeDetailsBtn.id = "close-details-popup"
 closeDetailsBtn.addEventListener ("mouseover",function btnCloOver() {
-    closeDetailsBtn.style.color = " #e53e3e";
-    closeDetailsBtn.style.background = " rgba(229, 62, 62, 0.1)";
+    closeDetailsBtn.classList.add("close-btn-hover");
 })
 closeDetailsBtn.addEventListener ("mouseout",function btnCloOut() {
-    closeDetailsBtn.style.color = "";
-    closeDetailsBtn.style.background = "";
+    closeDetailsBtn.classList.remove("close-btn-hover");
 })
 const iCloseDetails = document.createElement("i")
 iCloseDetails.classList.add("fas")
 iCloseDetails.classList.add("fa-times")
-closeDetailsBtn.addEventListener("click", function() {
-    popupDetails.style.display = 'none';
-});
 const bodyDetails = document.createElement("div")
 bodyDetails.classList.add("popup-body")
 const avatarDetails = document.createElement("div")
@@ -380,25 +358,6 @@ notesSdetails.textContent = "Notes:";
 const notesSpanDetails = document.createElement("span")
 notesSpanDetails.id = "detail-notes"
 
-ulContacts.addEventListener("click", function(e) {
-    if (e.target.closest('.btn-edit') || e.target.closest('.btn-delete')) {
-        return;
-    }
-    popupDetails.style.display = 'flex';
-    const contactItem = e.target.closest('li.contact-item');
-    if (contactItem) {
-        const index = contactItem.getAttribute('data-index');
-        const contact = contacts[index];
-        imgDetails.src = contact.imgSrc;
-        imgDetails.alt = contact.name;
-        nameSpanDetails.textContent = contact.name;
-        phoneSpanDetails.textContent = contact.phone;
-        addressSpanDetails.textContent = contact.address;
-        emailSpanDetails.textContent = contact.email;
-        notesSpanDetails.textContent = contact.notes;
-    }
-})
-
 // Append elements in the correct hierarchy
 popupDetails.appendChild(contactDetails)  // Add popup content to popup overlay
 contactDetails.appendChild(headerDetails)  // Add header to popup content
@@ -425,6 +384,53 @@ notesDetails.appendChild(notesSdetails)  // Add strong to notes div
 notesDetails.appendChild(notesSpanDetails)  // Add span to notes div
 document.body.appendChild(popupDetails)  // Add popup to body
 
+//close details popup function
+function closeDetailsPopup() {
+    popupDetails.style.display = 'none';
+    closeDetailsBtn.removeEventListener("click", closeDetailsPopup);
+}
+
+// contact details popup event listener
+ulContacts.addEventListener("click", function contactPopup(e) {
+    if (e.target.closest('.btn-edit') || e.target.closest('.btn-delete')) {
+        return;
+    }
+    popupDetails.style.display = 'flex';
+    const contactItem = e.target.closest('li.contact-item');
+    if (contactItem) {
+        const index = contactItem.getAttribute('data-index');
+        const contact = contacts[index];
+        imgDetails.src = contact.imgSrc;
+        imgDetails.alt = contact.name;
+        nameSpanDetails.textContent = contact.name;
+        phoneSpanDetails.textContent = contact.phone;
+        addressSpanDetails.textContent = contact.address;
+        emailSpanDetails.textContent = contact.email;
+        notesSpanDetails.textContent = contact.notes;
+        if (contact.address === "") {
+            addressDetails.style.display = "none";
+        }
+        else {
+            addressDetails.style.display = "block";
+        }
+        if (contact.email === "") {
+            emailDetails.style.display = "none";
+        }
+        else {
+            emailDetails.style.display = "block";
+        }
+        if (contact.notes === "") {
+            notesDetails.style.display = "none";
+        }
+        else {
+            notesDetails.style.display = "block";
+        }
+    }
+    closeDetailsBtn.removeEventListener("click", closeDetailsPopup);
+    closeDetailsBtn.addEventListener("click", closeDetailsPopup);
+})
+
+
 // actions
 // delete all contacts
 deleteAllBtn.addEventListener("click", function() {
@@ -435,7 +441,7 @@ deleteAllBtn.addEventListener("click", function() {
             contactsSection.appendChild(emptyContacts);
         }
     } else {
-        alert("No contacts to delete.");
+        showPopup("No contacts to delete.");
     }
 });
 
@@ -472,12 +478,10 @@ const closeFormBtn = document.createElement("button")
 closeFormBtn.classList.add("popup-close")
 closeFormBtn.id = "close-form-popup"
 closeFormBtn.addEventListener ("mouseover",function btnCloForOver() {
-    closeFormBtn.style.color = " #e53e3e";
-    closeFormBtn.style.background = " rgba(229, 62, 62, 0.1)";
+    closeFormBtn.classList.add("close-btn-hover");
 })
 closeFormBtn.addEventListener ("mouseout",function btnCloForOver() {
-    closeFormBtn.style.color = "";
-    closeFormBtn.style.background = "";
+    closeFormBtn.classList.remove("close-btn-hover");
 })
 const iCloseForm = document.createElement("i")
 iCloseForm.classList.add("fas")
@@ -571,12 +575,10 @@ saveFormBtn.classList.add("btn")
 saveFormBtn.classList.add("btn-primary")
 saveFormBtn.textContent = "Save contact";
 saveFormBtn.addEventListener ("mouseover",function btnSavForOver() {
-    saveFormBtn.style.transform = "translateY(-2px)";
-    saveFormBtn.style.background = " #5a6268";
+    saveFormBtn.classList.add("form-btn-hover");
 })
 saveFormBtn.addEventListener ("mouseout",function btnSavForOver() {
-    saveFormBtn.style.transform = "";
-    saveFormBtn.style.background = "";
+    saveFormBtn.classList.remove("form-btn-hover");
 })
 const cancelFormBtn = document.createElement("button")
 cancelFormBtn.type = "button"
@@ -585,18 +587,19 @@ cancelFormBtn.classList.add("btn-secondary")
 cancelFormBtn.id = "cancel-form"
 cancelFormBtn.textContent = "Cancel";
 cancelFormBtn.addEventListener ("mouseover",function btnCanForOver() {
-    cancelFormBtn.style.transform = "translateY(-2px)";
-    cancelFormBtn.style.background = " #5a6268";
+    cancelFormBtn.classList.add("form-btn-hover");
 })
 cancelFormBtn.addEventListener ("mouseout",function btnCanForOver() {
-    cancelFormBtn.style.transform = "";
-    cancelFormBtn.style.background = "";
+    cancelFormBtn.classList.remove("form-btn-hover");
 })
 cancelFormBtn.addEventListener("click", function() {
     if (confirm("Are you sure you want to cancel? All unsaved changes will be lost.")) {
     divForm.style.display = 'none';
     clearFormInputs();}
 });
+
+
+
 
 // Append elements in the correct hierarchy
 document.body.appendChild(divForm)  // Add form popup to body
@@ -652,6 +655,7 @@ function isValidEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 }
 
+// check if the input is empty
 const nameValid = document.createElement("p");
 nameValid.textContent = "Name is required.";
 nameValid.style.color = "red";
@@ -704,6 +708,67 @@ function validationsCheck() {
     return true;
 }
 
+//check if contact exists
+function contactExists(indnum) {
+    let flag = true;
+    if (indnum === -1) {
+        const exists = contacts.some(contact =>
+        contact.name.toLowerCase() === inputName.value.trim().toLowerCase() &&
+        contact.phone === inputPhone.value.trim()
+        );
+        const phoneExists = contacts.some(contact =>
+        contact.phone === inputPhone.value.trim() &&
+        contact.name.toLowerCase() !== inputName.value.trim().toLowerCase()
+        );
+        const nameExists = contacts.some(contact =>
+        contact.name.toLowerCase() === inputName.value.trim().toLowerCase() &&
+        contact.phone !== inputPhone.value.trim()
+        );
+
+        if (exists) {
+            showPopup("This contact already exists.");
+            flag = false;
+        } else if (phoneExists) {
+            showPopup("This phone number already exists in the contact list.");
+            flag = false;
+        } else if (nameExists) {
+            if (!confirm(`A contact with this name already exists. Do you want to add it anyway?`)) {
+                flag = false;
+            }
+        }
+    }
+
+    if (indnum > -1) {
+        for (let i = 0; i < contacts.length; i++) {
+            const contact = contacts[i];
+            if (i === indnum) {
+                continue;
+            }
+            if (contact.name.toLowerCase() === inputName.value.trim().toLowerCase() &&
+                contact.phone === inputPhone.value.trim()) {
+                showPopup("This contact already exists.");
+                flag = false;
+            }
+            if (contact.phone === inputPhone.value.trim() &&
+                contact.name.toLowerCase() !== inputName.value.trim().toLowerCase()) {
+                showPopup("This phone number already exists in the contact list.");
+                flag = false;
+            }
+            if (contact.name.toLowerCase() === inputName.value.trim().toLowerCase() &&
+                contact.phone !== inputPhone.value.trim()) {
+                if (!confirm(`A contact with this name already exists. Do you want to update it?`)) {
+                    flag = false;
+                }
+            }
+        };
+    }
+
+    if (!flag) {
+        return false;
+    }
+    return true;
+}
+
 // add contact button
 function newContact(e) {
     e.preventDefault();
@@ -711,30 +776,8 @@ function newContact(e) {
         console.log("Validation failed.");
         return;
     }
-    const exists = contacts.some(contact =>
-        contact.name.toLowerCase() === inputName.value.trim().toLowerCase() &&
-        contact.phone === inputPhone.value.trim()
-    );
-    const phoneExists = contacts.some(contact =>
-        contact.phone === inputPhone.value.trim() &&
-        contact.name.toLowerCase() !== inputName.value.trim().toLowerCase()
-    );
-    const nameExists = contacts.some(contact =>
-        contact.name.toLowerCase() === inputName.value.trim().toLowerCase() &&
-        contact.phone !== inputPhone.value.trim()
-    );
-
-    if (exists) {
-        alert("This contact already exists.");
+    if (!contactExists(-1)) {
         return;
-    } else if (phoneExists) {
-        if (!confirm(`A contact with this phone number already exists. Do you want to add it anyway?`)) {
-        return;
-    }
-    } else if (nameExists) {
-        if (!confirm(`A contact with this name already exists. Do you want to add it anyway?`)) {
-            return;
-        }
     }
     const newObj = {
         name: inputName.value.trim(),
@@ -744,6 +787,12 @@ function newContact(e) {
         notes: inputNotes.value.trim(),
         imgSrc: inputAvatar.value.trim()
     };
+    if (contacts.length === 0) {
+        contactsSection.removeChild(emptyContacts);
+        contactsSection.appendChild(hlContacts);
+        overalMainDiv.appendChild(contactsSection);
+        contactsSection.appendChild(ulContacts);
+    }
     contacts.push(newObj);
     contacts.sort((a, b) => a.name.localeCompare(b.name));
     organizeContacts();
@@ -751,7 +800,7 @@ function newContact(e) {
     clearFormInputs();
     console.log("New contact added:", newObj);
     console.log("Current contacts:", contacts);
-    console.log(confirm("New contact added successfully!"));
+    showPopup("New contact added successfully!");
 }
 
 function editContact(e) {
@@ -760,13 +809,16 @@ function editContact(e) {
     if (!validationsCheck()) {
         return;
     }
+    if (!contactExists(index)) {
+        return;
+    }
     if (inputName.value.trim() === contact.name &&
         inputPhone.value.trim() === contact.phone &&
         inputAddress.value.trim() === contact.address &&
         inputEmail.value.trim() === contact.email &&
         inputNotes.value.trim() === contact.notes &&
         inputAvatar.value.trim() === contact.imgSrc) {
-        alert("No changes made to the contact.");
+        showPopup("No changes made to the contact.");
         divForm.style.display = 'none';
         clearFormInputs();
     }
@@ -785,7 +837,7 @@ function editContact(e) {
         clearFormInputs();
         console.log("Contact edited:", contacts[index]);
         console.log("Current contacts:", contacts);
-        console.log(confirm("Contact edited successfully!"));
+        showPopup("Contact edited successfully!");
     }
 };
 
@@ -810,7 +862,7 @@ addContactBtn.addEventListener("click", function(e) {
 ulContacts.addEventListener("click", function(e) {
     if (e.target.closest('.btn-edit')) {
         const contactItem = e.target.closest('li.contact-item');
-        index = contactItem.getAttribute('data-index');
+        index = Number(contactItem.getAttribute('data-index'));
         const contact = contacts[index];
         divForm.style.display = 'flex';
         titleForm.textContent = "Edit Contact";
@@ -825,3 +877,56 @@ ulContacts.addEventListener("click", function(e) {
         saveFormBtn.addEventListener('click', editContact);
     }
 });
+
+//search functionality
+inputSearch.addEventListener("input", function() {
+    const searchTerm = inputSearch.value.toLowerCase();
+    const contactItems = document.querySelectorAll(".contact-item");
+    contactItems.forEach(item => {
+        const contactName = item.querySelector(".contact-name").textContent.toLowerCase();
+        if (contactName.includes(searchTerm)) {
+            item.style.display = "flex";
+        } else {
+            item.style.display = "none";
+        }
+    });
+})
+
+//small popup for notes
+const popupSmall = document.createElement("div")
+popupSmall.id = "small-popup"
+popupSmall.classList.add("popup-overlay")
+const popupContent = document.createElement("div");
+popupContent.classList.add("popup-content");
+const popupBody = document.createElement("div")
+popupBody.classList.add("popup-body")
+const popupText = document.createElement("p")
+popupText.classList.add("popup-text")
+const popupActions = document.createElement("div")
+popupActions.classList.add("form-actions")
+const okPopupBtn = document.createElement("button")
+okPopupBtn.classList.add("btn")
+okPopupBtn.classList.add("btn-primary")
+okPopupBtn.textContent = "OK";
+okPopupBtn.style.margin = "0.5rem 0.5rem 0.5rem 1.5rem";
+okPopupBtn.addEventListener ("mouseover",function btnConPopOver() {
+    okPopupBtn.classList.add("form-btn-hover");
+})
+okPopupBtn.addEventListener ("mouseout",function btnConPopOut() {
+    okPopupBtn.classList.remove("form-btn-hover");
+})
+
+document.body.appendChild(popupSmall)
+popupContent.appendChild(popupBody);
+popupContent.appendChild(popupActions);
+popupSmall.appendChild(popupContent);
+popupBody.appendChild(popupText);
+popupActions.appendChild(okPopupBtn);
+
+function showPopup(message) {
+    popupText.textContent = message;
+    popupSmall.style.display = "flex";
+    okPopupBtn.addEventListener("click", function() {
+        popupSmall.style.display = "none";
+    });
+}

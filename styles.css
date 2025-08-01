@@ -187,6 +187,13 @@ body {
     border: 2px solid transparent;
 }
 
+.contact-item-hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    border-color: #667eea;
+    background: rgba(102, 126, 234, 0.1);
+}
+
 .contact-avatar {
     flex-shrink: 0;
 }
@@ -365,10 +372,13 @@ body {
 .form-input,
 .form-textarea {
     padding: 12px;
-    border: 2px solid #e2e8f0;
+    border: 1px solid #e2e8f0;
     border-radius: 8px;
     font-size: 1rem;
     transition: all 0.3s ease;
+    outline: none;
+    border-color: inherit;
+    box-shadow: none;
 }
 
 .form-textarea {
@@ -381,6 +391,16 @@ body {
     gap: 1rem;
     justify-content: flex-end;
     margin-top: 1rem;
+}
+
+.form-btn-hover {
+    transform: translateY(-2px);
+    background: #5a6268;
+}
+
+.close-btn-hover {
+    color: #e53e3e;
+    background: rgba(229, 62, 62, 0.1);
 }
 
 /* Footer */
